@@ -2,6 +2,9 @@ const themeToggle = document.getElementById("themeToggle");
 const searchButton = document.querySelector("#search-btn");
 const searchInput = document.querySelector("#search-input");
 const body = document.body;
+const reposSection = document.querySelector(".repos-section");
+const reposList = document.querySelector(".repos-list");
+const repoEmpty = document.querySelector(".repo-empty");
 
 const currentTheme = window.theme || "light";
 
@@ -54,11 +57,9 @@ const getLanguageClass = (language) => {
 };
 
 const renderRepos = (repos) => {
-  const reposSection = document.querySelector(".repos-section");
-  const reposList = document.querySelector(".repos-list");
-
   if (repos.length === 0) {
     reposSection.style.display = "none";
+    repoEmpty.style.display = "block";
     return;
   }
 
@@ -139,8 +140,10 @@ async function getUserData() {
     if (!response.ok) {
       if (response.status === 404) {
         showError("User not found. Please check the username and try again.");
+        repoEmpty.style.display = "none";
       } else {
         showError("An error occurred while fetching user data.");
+        repoEmpty.style.display = "none";
       }
       return;
     }
@@ -150,6 +153,7 @@ async function getUserData() {
   } catch (error) {
     console.error("Error:", error.message);
     showError("An error occurred. Please try again later.");
+    repoEmpty.style.display = "none";
   }
 }
 
